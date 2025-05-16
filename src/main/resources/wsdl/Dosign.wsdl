@@ -1,0 +1,951 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://dosign.session.business.dosign.dosign.doqui.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Dosign" targetNamespace="http://dosign.session.business.dosign.dosign.doqui.it/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dosign.session.business.dosign.dosign.doqui.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dosign.session.business.dosign.dosign.doqui.it/">
+  <xs:element name="asyncSigillo" type="tns:asyncSigillo"/>
+  <xs:element name="asyncSigilloResponse" type="tns:asyncSigilloResponse"/>
+  <xs:element name="callTimestamping" type="tns:callTimestamping"/>
+  <xs:element name="callTimestampingResponse" type="tns:callTimestampingResponse"/>
+  <xs:element name="extractDocumentFromEnvelope" type="tns:extractDocumentFromEnvelope"/>
+  <xs:element name="extractDocumentFromEnvelopeResponse" type="tns:extractDocumentFromEnvelopeResponse"/>
+  <xs:element name="extractDocumentFromXmlEnvelope" type="tns:extractDocumentFromXmlEnvelope"/>
+  <xs:element name="extractDocumentFromXmlEnvelopeResponse" type="tns:extractDocumentFromXmlEnvelopeResponse"/>
+  <xs:element name="getAsyncReport" type="tns:getAsyncReport"/>
+  <xs:element name="getAsyncReportResponse" type="tns:getAsyncReportResponse"/>
+  <xs:element name="getAsyncSigilloOutDto" type="tns:getAsyncSigilloOutDto"/>
+  <xs:element name="getAsyncSigilloOutDtoResponse" type="tns:getAsyncSigilloOutDtoResponse"/>
+  <xs:element name="getSignaturesNumber" type="tns:getSignaturesNumber"/>
+  <xs:element name="getSignaturesNumberResponse" type="tns:getSignaturesNumberResponse"/>
+  <xs:element name="sigillo" type="tns:sigillo"/>
+  <xs:element name="sigilloResponse" type="tns:sigilloResponse"/>
+  <xs:element name="testResources" type="tns:testResources"/>
+  <xs:element name="testResourcesResponse" type="tns:testResourcesResponse"/>
+  <xs:element name="verifyAndExtractDocument" type="tns:verifyAndExtractDocument"/>
+  <xs:element name="verifyAndExtractDocumentResponse" type="tns:verifyAndExtractDocumentResponse"/>
+  <xs:element name="verifyAsyncDocument" type="tns:verifyAsyncDocument"/>
+  <xs:element name="verifyAsyncDocumentResponse" type="tns:verifyAsyncDocumentResponse"/>
+  <xs:element name="verifyCertificate" type="tns:verifyCertificate"/>
+  <xs:element name="verifyCertificateResponse" type="tns:verifyCertificateResponse"/>
+  <xs:element name="verifyDocument" type="tns:verifyDocument"/>
+  <xs:element name="verifyDocumentParams" type="tns:verifyDocumentParams"/>
+  <xs:element name="verifyDocumentParamsResponse" type="tns:verifyDocumentParamsResponse"/>
+  <xs:element name="verifyDocumentResponse" type="tns:verifyDocumentResponse"/>
+  <xs:element name="verifyDocumentWT" type="tns:verifyDocumentWT"/>
+  <xs:element name="verifyDocumentWTResponse" type="tns:verifyDocumentWTResponse"/>
+  <xs:element name="verifyDocumentXml" type="tns:verifyDocumentXml"/>
+  <xs:element name="verifyDocumentXmlResponse" type="tns:verifyDocumentXmlResponse"/>
+  <xs:complexType name="testResources">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="testResourcesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyCertificate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:certBuffer"/>
+      <xs:element minOccurs="0" name="arg1" type="tns:verifyParameter"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="certBuffer">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="buffer" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="dosignDto">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="verifyParameter">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element name="profileType" type="xs:int"/>
+          <xs:element minOccurs="0" name="verificationDate" type="xs:dateTime"/>
+          <xs:element name="verificationScope" type="xs:int"/>
+          <xs:element name="verificationType" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="verifyCertificateResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyCertificateReport"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyCertificateReport">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="caCertExpirationDate" type="xs:string"/>
+          <xs:element minOccurs="0" name="caCertRevocationDate" type="xs:string"/>
+          <xs:element minOccurs="0" name="certificationAuthority" type="xs:string"/>
+          <xs:element minOccurs="0" name="crlDate" type="xs:string"/>
+          <xs:element minOccurs="0" name="crlExpirationDate" type="xs:string"/>
+          <xs:element name="errorCode" type="xs:int"/>
+          <xs:element minOccurs="0" name="errorDescription" type="xs:string"/>
+          <xs:element minOccurs="0" name="expiredCertsOnCRL" type="xs:string"/>
+          <xs:element minOccurs="0" name="holdDate" type="xs:string"/>
+          <xs:element minOccurs="0" name="invalidSince" type="xs:string"/>
+          <xs:element minOccurs="0" name="issuerAltName" type="xs:string"/>
+          <xs:element minOccurs="0" name="keyUsage" type="xs:string"/>
+          <xs:element minOccurs="0" name="keyUsageString" type="xs:string"/>
+          <xs:element minOccurs="0" name="OCSPExpired" type="xs:string"/>
+          <xs:element minOccurs="0" name="OCSPNextUpdate" type="xs:string"/>
+          <xs:element minOccurs="0" name="OCSPProducedAt" type="xs:string"/>
+          <xs:element minOccurs="0" name="OCSPThisUpdate" type="xs:string"/>
+          <xs:element minOccurs="0" name="revocationDate" type="xs:string"/>
+          <xs:element minOccurs="0" name="serialNumber" type="xs:string"/>
+          <xs:element minOccurs="0" name="subject" type="xs:string"/>
+          <xs:element minOccurs="0" name="validFrom" type="xs:string"/>
+          <xs:element minOccurs="0" name="validTo" type="xs:string"/>
+          <xs:element minOccurs="0" name="verificationDateTime" type="xs:string"/>
+          <xs:element minOccurs="0" name="verificationResult" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="sigillo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:sigilloSignatureDto"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sigilloSignatureDto">
+    <xs:complexContent>
+      <xs:extension base="tns:remoteSignatureDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="data" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="type" type="xs:string"/>
+          <xs:element minOccurs="0" name="delegatedDomain" type="xs:string"/>
+          <xs:element minOccurs="0" name="delegatedPassword" type="xs:string"/>
+          <xs:element minOccurs="0" name="delegatedUser" type="xs:string"/>
+          <xs:element minOccurs="0" name="user" type="xs:string"/>
+          <xs:element minOccurs="0" name="otpPwd" type="xs:string"/>
+          <xs:element minOccurs="0" name="typeHSM" type="xs:string"/>
+          <xs:element minOccurs="0" name="typeOtpAuth" type="xs:string"/>
+          <xs:element minOccurs="0" name="idenv" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="remoteSignatureDto">
+    <xs:complexContent>
+      <xs:extension base="tns:baseRemoteSignatureDto">
+        <xs:sequence>
+          <xs:element name="encoding" type="xs:int"/>
+          <xs:element minOccurs="0" name="signingDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="baseRemoteSignatureDto">
+    <xs:complexContent>
+      <xs:extension base="tns:remoteDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alias" type="xs:string"/>
+          <xs:element minOccurs="0" name="customerInformation" type="xs:string"/>
+          <xs:element minOccurs="0" name="pin" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="remoteDto">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element name="customerCa" type="xs:int"/>
+          <xs:element minOccurs="0" name="sendingType" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="sigilloResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentXml">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="signedBuffer">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="buffer" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="detachedBuffer" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentXmlResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyReport"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyReport">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="child" type="tns:verifyReport"/>
+          <xs:element name="conformitaParametriInput" type="xs:int"/>
+          <xs:element minOccurs="0" name="data" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+          <xs:element name="errorCode" type="xs:int"/>
+          <xs:element name="formatoFirma" type="xs:int"/>
+          <xs:element name="numCertificatiFirma" type="xs:int"/>
+          <xs:element name="numCertificatiMarca" type="xs:int"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="signature" nillable="true" type="tns:signature"/>
+          <xs:element name="tipoFirma" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="signature">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element name="annoFirma" type="xs:long"/>
+          <xs:element minOccurs="0" name="ca" type="xs:string"/>
+          <xs:element minOccurs="0" name="cert" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="codiceFiscale" type="xs:string"/>
+          <xs:element minOccurs="0" name="dataOra" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="dataOraVerifica" type="xs:string"/>
+          <xs:element minOccurs="0" name="dipartimento" type="xs:string"/>
+          <xs:element minOccurs="0" name="dnQualifier" type="xs:string"/>
+          <xs:element name="errorCode" type="xs:int"/>
+          <xs:element minOccurs="0" name="fineValidita" type="xs:string"/>
+          <xs:element minOccurs="0" name="firmatario" type="xs:string"/>
+          <xs:element name="giornoFirma" type="xs:long"/>
+          <xs:element minOccurs="0" name="givenname" type="xs:string"/>
+          <xs:element minOccurs="0" name="inizioValidita" type="xs:string"/>
+          <xs:element name="meseFirma" type="xs:long"/>
+          <xs:element name="minutiFirma" type="xs:long"/>
+          <xs:element minOccurs="0" name="nominativoFirmatario" type="xs:string"/>
+          <xs:element name="numeroControfirme" type="xs:long"/>
+          <xs:element name="oraFirma" type="xs:long"/>
+          <xs:element minOccurs="0" name="organizzazione" type="xs:string"/>
+          <xs:element minOccurs="0" name="paese" type="xs:string"/>
+          <xs:element name="secondiFirma" type="xs:long"/>
+          <xs:element minOccurs="0" name="serialNumber" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="signature" nillable="true" type="tns:signature"/>
+          <xs:element minOccurs="0" name="surname" type="xs:string"/>
+          <xs:element name="timestamped" type="xs:boolean"/>
+          <xs:element name="tipoCertificato" type="xs:int"/>
+          <xs:element name="tipoFirma" type="xs:long"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="verifyAndExtractDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyAndExtractDocumentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyReport"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="extractDocumentFromXmlEnvelope">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:envelopedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="envelopedBuffer">
+    <xs:complexContent>
+      <xs:extension base="tns:envelopeInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="buffer" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="envelopeInformation">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="formatoDiInput" type="xs:string"/>
+          <xs:element minOccurs="0" name="formatoDiOutput" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="extractDocumentFromXmlEnvelopeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:document"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="document">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="buffer" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="verifyAsyncDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:asyncVerifyDto"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncVerifyDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="notifyUrl" type="xs:string"/>
+      <xs:element minOccurs="0" name="param" type="tns:verifyParameter"/>
+      <xs:element minOccurs="0" name="signed" type="tns:signedBuffer"/>
+      <xs:element minOccurs="0" name="tokeUuid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyAsyncDocumentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncSigillo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:asyncSigilloInDto"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncSigilloInDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="data" type="tns:sigilloSignatureDto"/>
+      <xs:element minOccurs="0" name="notifyUrl" type="xs:string"/>
+      <xs:element minOccurs="0" name="tokenUid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncSigilloResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getAsyncReport">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getAsyncReportResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:asyncReportDto"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncReportDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="report" type="tns:verifyReport"/>
+      <xs:element minOccurs="0" name="status" type="tns:status"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="extractDocumentFromEnvelope">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:envelopedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="extractDocumentFromEnvelopeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:document"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getAsyncSigilloOutDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getAsyncSigilloOutDtoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:asyncSigilloOutDto"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="asyncSigilloOutDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="data" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="status" type="tns:status"/>
+      <xs:element minOccurs="0" name="tokenUid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="callTimestamping">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:timestampingInformationFileContent"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="timestampingInformationFileContent">
+    <xs:complexContent>
+      <xs:extension base="tns:timestampingInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="input" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="timestampingInformation">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="algorithm" type="xs:string"/>
+          <xs:element minOccurs="0" name="inputFormat" type="xs:string"/>
+          <xs:element minOccurs="0" name="outputFormat" type="xs:string"/>
+          <xs:element minOccurs="0" name="port" type="xs:string"/>
+          <xs:element minOccurs="0" name="server" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="callTimestampingResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyReport"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentWT">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentWTResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyReportWT"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyReportWT">
+    <xs:complexContent>
+      <xs:extension base="tns:dosignDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="child" type="tns:verifyReportWT"/>
+          <xs:element name="conformitaParametriInput" type="xs:int"/>
+          <xs:element minOccurs="0" name="data" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+          <xs:element name="errorCode" type="xs:int"/>
+          <xs:element name="formatoFirma" type="xs:int"/>
+          <xs:element name="numCertificatiFirma" type="xs:int"/>
+          <xs:element name="numCertificatiMarca" type="xs:int"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="signature" nillable="true" type="tns:signatureWT"/>
+          <xs:element name="tipoFirma" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="signatureWT">
+    <xs:complexContent>
+      <xs:extension base="tns:signature">
+        <xs:sequence>
+          <xs:element name="type" type="xs:long"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="getSignaturesNumber">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getSignaturesNumberResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentParams">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:signedBuffer"/>
+      <xs:element minOccurs="0" name="arg1" type="tns:verifyParameter"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verifyDocumentParamsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:verifyReport"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ERROR"/>
+      <xs:enumeration value="EXPIRED"/>
+      <xs:enumeration value="READY"/>
+      <xs:enumeration value="SCHEDULED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DosignException" type="tns:DosignException"/>
+  <xs:complexType name="DosignException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nestedExcMsg" type="xs:string"/>
+      <xs:element minOccurs="0" name="stackTraceMessage" type="xs:string"/>
+      <xs:element minOccurs="0" name="nestedExcClassName" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="asyncSigilloResponse">
+    <wsdl:part element="tns:asyncSigilloResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyCertificate">
+    <wsdl:part element="tns:verifyCertificate" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="testResourcesResponse">
+    <wsdl:part element="tns:testResourcesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyAsyncDocumentResponse">
+    <wsdl:part element="tns:verifyAsyncDocumentResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentParamsResponse">
+    <wsdl:part element="tns:verifyDocumentParamsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extractDocumentFromXmlEnvelope">
+    <wsdl:part element="tns:extractDocumentFromXmlEnvelope" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="asyncSigillo">
+    <wsdl:part element="tns:asyncSigillo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentResponse">
+    <wsdl:part element="tns:verifyDocumentResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extractDocumentFromEnvelopeResponse">
+    <wsdl:part element="tns:extractDocumentFromEnvelopeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentWTResponse">
+    <wsdl:part element="tns:verifyDocumentWTResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAsyncSigilloOutDto">
+    <wsdl:part element="tns:getAsyncSigilloOutDto" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="callTimestamping">
+    <wsdl:part element="tns:callTimestamping" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentWT">
+    <wsdl:part element="tns:verifyDocumentWT" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DosignException">
+    <wsdl:part element="tns:DosignException" name="DosignException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSignaturesNumber">
+    <wsdl:part element="tns:getSignaturesNumber" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentParams">
+    <wsdl:part element="tns:verifyDocumentParams" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAsyncSigilloOutDtoResponse">
+    <wsdl:part element="tns:getAsyncSigilloOutDtoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSignaturesNumberResponse">
+    <wsdl:part element="tns:getSignaturesNumberResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAsyncReportResponse">
+    <wsdl:part element="tns:getAsyncReportResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="testResources">
+    <wsdl:part element="tns:testResources" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sigillo">
+    <wsdl:part element="tns:sigillo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="callTimestampingResponse">
+    <wsdl:part element="tns:callTimestampingResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyCertificateResponse">
+    <wsdl:part element="tns:verifyCertificateResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentXmlResponse">
+    <wsdl:part element="tns:verifyDocumentXmlResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocumentXml">
+    <wsdl:part element="tns:verifyDocumentXml" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyAndExtractDocument">
+    <wsdl:part element="tns:verifyAndExtractDocument" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sigilloResponse">
+    <wsdl:part element="tns:sigilloResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyAsyncDocument">
+    <wsdl:part element="tns:verifyAsyncDocument" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAsyncReport">
+    <wsdl:part element="tns:getAsyncReport" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyAndExtractDocumentResponse">
+    <wsdl:part element="tns:verifyAndExtractDocumentResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extractDocumentFromEnvelope">
+    <wsdl:part element="tns:extractDocumentFromEnvelope" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extractDocumentFromXmlEnvelopeResponse">
+    <wsdl:part element="tns:extractDocumentFromXmlEnvelopeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifyDocument">
+    <wsdl:part element="tns:verifyDocument" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Dosign">
+    <wsdl:operation name="testResources">
+      <wsdl:input message="tns:testResources" name="testResources">
+    </wsdl:input>
+      <wsdl:output message="tns:testResourcesResponse" name="testResourcesResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyCertificate">
+      <wsdl:input message="tns:verifyCertificate" name="verifyCertificate">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyCertificateResponse" name="verifyCertificateResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sigillo">
+      <wsdl:input message="tns:sigillo" name="sigillo">
+    </wsdl:input>
+      <wsdl:output message="tns:sigilloResponse" name="sigilloResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentXml">
+      <wsdl:input message="tns:verifyDocumentXml" name="verifyDocumentXml">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyDocumentXmlResponse" name="verifyDocumentXmlResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyAndExtractDocument">
+      <wsdl:input message="tns:verifyAndExtractDocument" name="verifyAndExtractDocument">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyAndExtractDocumentResponse" name="verifyAndExtractDocumentResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extractDocumentFromXmlEnvelope">
+      <wsdl:input message="tns:extractDocumentFromXmlEnvelope" name="extractDocumentFromXmlEnvelope">
+    </wsdl:input>
+      <wsdl:output message="tns:extractDocumentFromXmlEnvelopeResponse" name="extractDocumentFromXmlEnvelopeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyAsyncDocument">
+      <wsdl:input message="tns:verifyAsyncDocument" name="verifyAsyncDocument">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyAsyncDocumentResponse" name="verifyAsyncDocumentResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="asyncSigillo">
+      <wsdl:input message="tns:asyncSigillo" name="asyncSigillo">
+    </wsdl:input>
+      <wsdl:output message="tns:asyncSigilloResponse" name="asyncSigilloResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAsyncReport">
+      <wsdl:input message="tns:getAsyncReport" name="getAsyncReport">
+    </wsdl:input>
+      <wsdl:output message="tns:getAsyncReportResponse" name="getAsyncReportResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extractDocumentFromEnvelope">
+      <wsdl:input message="tns:extractDocumentFromEnvelope" name="extractDocumentFromEnvelope">
+    </wsdl:input>
+      <wsdl:output message="tns:extractDocumentFromEnvelopeResponse" name="extractDocumentFromEnvelopeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAsyncSigilloOutDto">
+      <wsdl:input message="tns:getAsyncSigilloOutDto" name="getAsyncSigilloOutDto">
+    </wsdl:input>
+      <wsdl:output message="tns:getAsyncSigilloOutDtoResponse" name="getAsyncSigilloOutDtoResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="callTimestamping">
+      <wsdl:input message="tns:callTimestamping" name="callTimestamping">
+    </wsdl:input>
+      <wsdl:output message="tns:callTimestampingResponse" name="callTimestampingResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocument">
+      <wsdl:input message="tns:verifyDocument" name="verifyDocument">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyDocumentResponse" name="verifyDocumentResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentWT">
+      <wsdl:input message="tns:verifyDocumentWT" name="verifyDocumentWT">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyDocumentWTResponse" name="verifyDocumentWTResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSignaturesNumber">
+      <wsdl:input message="tns:getSignaturesNumber" name="getSignaturesNumber">
+    </wsdl:input>
+      <wsdl:output message="tns:getSignaturesNumberResponse" name="getSignaturesNumberResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentParams">
+      <wsdl:input message="tns:verifyDocumentParams" name="verifyDocumentParams">
+    </wsdl:input>
+      <wsdl:output message="tns:verifyDocumentParamsResponse" name="verifyDocumentParamsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DosignException" name="DosignException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DosignSoapBinding" type="tns:Dosign">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="testResources">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="testResources">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="testResourcesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyCertificate">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyCertificate">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyCertificateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sigillo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sigillo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sigilloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentXml">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyDocumentXml">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyDocumentXmlResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyAndExtractDocument">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyAndExtractDocument">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyAndExtractDocumentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extractDocumentFromXmlEnvelope">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="extractDocumentFromXmlEnvelope">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="extractDocumentFromXmlEnvelopeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyAsyncDocument">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyAsyncDocument">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyAsyncDocumentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="asyncSigillo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="asyncSigillo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="asyncSigilloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAsyncReport">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAsyncReport">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAsyncReportResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extractDocumentFromEnvelope">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="extractDocumentFromEnvelope">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="extractDocumentFromEnvelopeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAsyncSigilloOutDto">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAsyncSigilloOutDto">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAsyncSigilloOutDtoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="callTimestamping">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="callTimestamping">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="callTimestampingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocument">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyDocument">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyDocumentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentWT">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyDocumentWT">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyDocumentWTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSignaturesNumber">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getSignaturesNumber">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSignaturesNumberResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyDocumentParams">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verifyDocumentParams">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifyDocumentParamsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DosignException">
+        <soap:fault name="DosignException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Dosign">
+    <wsdl:port binding="tns:DosignSoapBinding" name="DosignBeanPort">
+      <soap:address location="http://dev-jbdosign01.csi.it:32110/dosignmanager/services/Dosign"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

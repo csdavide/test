@@ -1,0 +1,96 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://asyncservice.dosign.session.business.dosign.dosign.doqui.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="DosignAsyncSignatureValidation" targetNamespace="http://asyncservice.dosign.session.business.dosign.dosign.doqui.it/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://asyncservice.dosign.session.business.dosign.dosign.doqui.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://asyncservice.dosign.session.business.dosign.dosign.doqui.it/">
+            <xs:element name="getJobError" type="tns:getJobError"/>
+            <xs:element name="getJobErrorResponse" type="tns:getJobErrorResponse"/>
+            <xs:element name="testResources" type="tns:testResources"/>
+            <xs:element name="testResourcesResponse" type="tns:testResourcesResponse"/>
+            <xs:complexType name="getJobError">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getJobErrorResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="testResources">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="testResourcesResponse">
+                <xs:sequence>
+                    <xs:element name="return" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="DosignException" type="tns:DosignException"/>
+            <xs:complexType name="DosignException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="nestedExcMsg" type="xs:string"/>
+                    <xs:element minOccurs="0" name="stackTraceMessage" type="xs:string"/>
+                    <xs:element minOccurs="0" name="nestedExcClassName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getJobErrorResponse">
+        <wsdl:part element="tns:getJobErrorResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DosignException">
+        <wsdl:part element="tns:DosignException" name="DosignException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getJobError">
+        <wsdl:part element="tns:getJobError" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="testResources">
+        <wsdl:part element="tns:testResources" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="testResourcesResponse">
+        <wsdl:part element="tns:testResourcesResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="DosignAsyncSignatureValidation">
+        <wsdl:operation name="getJobError">
+            <wsdl:input message="tns:getJobError" name="getJobError"> </wsdl:input>
+            <wsdl:output message="tns:getJobErrorResponse" name="getJobErrorResponse"> </wsdl:output>
+            <wsdl:fault message="tns:DosignException" name="DosignException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="testResources">
+            <wsdl:input message="tns:testResources" name="testResources"> </wsdl:input>
+            <wsdl:output message="tns:testResourcesResponse" name="testResourcesResponse"> </wsdl:output>
+            <wsdl:fault message="tns:DosignException" name="DosignException"> </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="DosignAsyncSignatureValidationSoapBinding" type="tns:DosignAsyncSignatureValidation">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getJobError">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getJobError">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getJobErrorResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="DosignException">
+                <soap:fault name="DosignException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="testResources">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="testResources">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="testResourcesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="DosignException">
+                <soap:fault name="DosignException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DosignAsyncSignatureValidation">
+        <wsdl:port binding="tns:DosignAsyncSignatureValidationSoapBinding" name="DosignAsyncSignatureValidationBeanPort">
+            <soap:address location="http://applogic.reteunitaria.piemonte.it:80/dosignmanager/DosignAsyncSignatureValidation/DosignAsyncSignatureValidationBean"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

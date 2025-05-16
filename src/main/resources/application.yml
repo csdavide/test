@@ -1,0 +1,502 @@
+libra:
+  locale: it_IT
+  files:
+    shared-sec: "1111-2222-3333"
+
+  paths:
+    user-home: "/app:company_home/app:user_homes/"
+    temp: "/app:company_home/cm:temp/"
+
+  authentication:
+    default-alg: MD4
+    new-password-alg: MD5
+    cache:
+      size: 1000
+      application-time: 1h
+
+  reindex:
+    request-pool-size: 4
+    queue: tasks
+    time-before-clean: 168h
+
+  formats:
+    droid:
+      signature:
+        path: "./res/DROID_SignatureFile.xml"
+      container:
+        path: "./res/container-signature.xml"
+    tika:
+      timeout: 15s
+
+  apache-fop:
+    configuration:
+      path: "./res/cfg_fop.xconf"
+
+  dosign:
+    endpoints:
+      dosign: "http://applogic.reteunitaria.piemonte.it/dosignmanager/services/Dosign?wsdl"
+      dosignDefered: "http://applogic.reteunitaria.piemonte.it/dosignmanager/DosignDefered/DosignDeferedBean?wsdl"
+      dosignAsync: "http://applogic.reteunitaria.piemonte.it/dosignmanager/DosignAsyncSignatureValidation/DosignAsyncSignatureValidationBean?wsdl"
+    seal:
+      default-id-env: "010666"
+    operation:
+      timeout: 15s
+      polling-time: 3s
+    token:
+      verify: "vr-LIBRA-"
+      seal: "sd-LIBRA-"
+
+  stats:
+    buffer-size: 100
+    wait-time: 10m
+    log-time: 10m
+
+#  telemetry:
+#    messaging:
+#      queue: trace
+
+async:
+
+  producer-pool:
+    concurrency: 4
+    default-queue: tasks
+    retry-wait-time: 5s
+
+  consumers:
+    - channel: tasks
+      concurrency: 4
+      retry-wait-time: 5s
+      is-for-reindex: true
+    - channel: tasks
+      priority: 3
+      concurrency: 3
+      retry-wait-time: 5s
+      is-for-reindex: true
+    - channel: tasks
+      priority: 5
+      concurrency: 1
+      retry-wait-time: 5s
+      is-for-reindex: true
+    - channel: operations
+    - channel: events
+      is-topic: true
+
+  operations:
+    queue: operations
+
+quarkus:
+  default-locale: it-IT
+  http:
+    port: 9000
+    limits:
+      max-form-attribute-size: 1024M
+      max-body-size: 1024M
+    body:
+      delete-uploaded-files-on-end: true
+      uploads-directory: ./tmp
+    enable-compression: true
+    compression-min-response-size: 1024
+    compression-threshold: 2048
+
+  resteasy:
+    path: /api
+
+  swagger-ui:
+    always-include: true
+
+  vertx:
+    max-event-loop-execute-time: 60s
+    max-worker-execute-time: 120s
+
+  smallrye-health:
+    management:
+      enabled: true
+
+  log:
+    console:
+      enable: false
+    min-level: TRACE
+    category:
+      "it.doqui.libra":
+        level: DEBUG
+      "it.doqui.index":
+        level: DEBUG
+      "org.apache.pdfbox.pdmodel.font.PDTrueTypeFont":
+        level: ERROR
+      "it.doqui.libra.librabl.business.provider.telemetry.Tracer":
+        handlers: telemetry
+        min-level: TRACE
+        level: TRACE
+        use-parent-handlers: false
+      "it.doqui.libra.librabl.business.provider.telemetry.EventLogger":
+        handlers: tracing
+        min-level: TRACE
+        level: TRACE
+        use-parent-handlers: false
+
+    file:
+      enable: true
+      path: "logs/librabl.log"
+      rotation:
+        max-file-size: 50M
+        max-backup-index: 100
+
+    handler:
+      file:
+        telemetry:
+          enable: false
+          path: "logs/perf.log"
+          format: "%d,[%p],[%c],[%t],%m%n"
+          rotation:
+            max-file-size: 50M
+            max-backup-index: 20
+        tracing:
+          enable: false
+          path: "logs/events.log"
+          format: "%d,[%p],[%c],[%t],%m%n"
+          rotation:
+            max-file-size: 50M
+            max-backup-index: 20
+
+  cxf:
+    codegen:
+      wsdl2java:
+        includes: wsdl/*.wsdl
+
+    path: /cxf
+    endpoint:
+      "/streamingWS":
+        implementor: it.doqui.index.ecmengine.mtom.impl.StreamingServiceImpl
+        #soap-binding: "http://www.w3.org/2003/05/soap/bindings/HTTP/?mtom=true"
+        soap-binding: "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true"
+        #in-interceptors: it.doqui.libra.librabl.business.provider.security.SecuritySoapInterceptor
+        #features: org.apache.cxf.ext.logging.LoggingFeature
+
+  datasource:
+    devservices:
+      enabled: false
+    db-kind: postgresql
+    metrics:
+      enabled: true
+
+  #  hibernate-orm:
+#    database:
+#      generation: none
+#    multitenant: SCHEMA
+#    log:
+#      sql: false
+#    sql-load-script: no-file
+
+  artemis:
+    devservices:
+      enabled: false
+    username: doqui
+    password: doqui
+
+  smallrye-openapi:
+    info-description: Libra ECM System
+    info-contact-email: gruppo_index@csi.it
+    info-contact-name: Gruppo Index
+    info-terms-of-service: https://www.doqui.it
+
+  index-dependency:
+    guava:
+      group-id: com.google.guava
+      artifact-id: guava
+
+solr:
+  username: doqui
+  password: doqui
+  fullTextSizeThreshold: 10485760
+  numShards: 1
+  numReplicas: 3
+  additionalNotTokenizedFieldSuffix: "_nt"
+  additionalTokenizedFieldSuffix: "_locale_it"
+  joinCollectionMode: default # default | cross | multiple | none
+  defaultRowsLimit: 32767
+  maxRowsLimit: 65535
+  #retroCompatibilityMode: true
+  #fakeIndexModeEnabled: true
+  indexer:
+    pagination:
+      addNodesPageSize: 50
+      securityGroupsPageSize: 100
+      removeNodesPageSize: 100
+
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        operationIdStrategy: METHOD
+
+"%dev":
+  libra:
+    authentication:
+      validate-jwt-assertion-expiration: false
+
+    dosign:
+      operation:
+        timeout: 60s
+        polling-time: 3s
+
+  quarkus:
+    log:
+      console:
+        enable: true
+      category:
+        "it.doqui.libra.librabl":
+          level: TRACE
+        "it.doqui.libra.librabl.business.provider.schema.impl":
+          level: DEBUG
+
+      file:
+        enable: false
+
+    artemis:
+      url: tcp://localhost:61616
+
+    vertx:
+      max-event-loop-execute-time: 120s
+
+#    hibernate-orm:
+#      log:
+#        sql: true
+
+    live-reload:
+      instrumentation: true
+
+#    cxf:
+#      endpoint:
+#        "/streamingWS":
+#          features: org.apache.cxf.ext.logging.LoggingFeature
+
+"%dev-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://dev-applogic.reteunitaria.piemonte.it/ecmengineqs_f1/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://dev-applogic.reteunitaria.piemonte.it/ecmengineqs_f1/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: direct
+
+"%test-coto-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://tst-applogic.reteunitaria.piemonte.it/librabl_tst01/cxf/streamingWS"
+          features: org.apache.cxf.ext.logging.LoggingFeature
+
+    swagger-ui:
+      urls:
+        default: "http://tst-applogic.reteunitaria.piemonte.it/librabl_tst01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+  libra:
+    logging:
+      log-any-errors: true
+
+"%test-rp-03":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://tst-applogic.reteunitaria.piemonte.it/librabl/tst02/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://tst-applogic.reteunitaria.piemonte.it/librabl/tst02/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%test-int-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://tst-applogic.reteunitaria.piemonte.it/librabl/exp/cxf/streamingWS"
+          features: org.apache.cxf.ext.logging.LoggingFeature
+
+    swagger-ui:
+      urls:
+        default: "http://tst-applogic.reteunitaria.piemonte.it/librabl/exp/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+  libra:
+    logging:
+      log-any-errors: true
+
+"%integ-int-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://tst-applogic.reteunitaria.piemonte.it/librabl_sca02/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://tst-applogic.reteunitaria.piemonte.it/librabl_sca02/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%coll-int-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://coll-applogic.reteunitaria.piemonte.it/librabl/int01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://coll-applogic.reteunitaria.piemonte.it/librabl/int01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-int-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/int01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/int01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-csi-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/csi01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/csi01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rdiv-03":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv03/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv03/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rpcr-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rpcr01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rpcr01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+      
+"%prod-rdiv-02":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv02/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv02/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rdiv-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rdiv01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-coto-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/coto01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/coto01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-coto-02":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/coto02/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/coto02/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rp-01":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rp01/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rp01/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rp-02":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rp02/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rp02/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
+
+"%prod-rp-03":
+  quarkus:
+    cxf:
+      endpoint:
+        "/streamingWS":
+          published-endpoint-url: "http://applogic.reteunitaria.piemonte.it/librabl/rp03/cxf/streamingWS"
+
+    swagger-ui:
+      urls:
+        default: "http://applogic.reteunitaria.piemonte.it/librabl/rp03/q/openapi"
+        direct: "/q/openapi"
+      urls-primary-name: default
